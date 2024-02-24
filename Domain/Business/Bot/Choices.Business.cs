@@ -4,8 +4,6 @@ using Domain.DTO.Genshin;
 using Domain.Interface.Bot;
 using Domain.Interface.Business.Genshin;
 using Microsoft.Extensions.Caching.Memory;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace ConsoleApp.Bot;
 
