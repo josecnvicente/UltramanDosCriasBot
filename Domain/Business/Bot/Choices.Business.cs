@@ -4,7 +4,6 @@ using Domain.DTO.Genshin;
 using Domain.Interface.Bot;
 using Domain.Interface.Business.Genshin;
 using Microsoft.Extensions.Caching.Memory;
-using System.Linq;
 
 namespace ConsoleApp.Bot;
 
@@ -24,6 +23,9 @@ public class ChoicesBusiness : IChoicesBusiness
 
     public async Task ChoseCoice(SocketMessage message)
     {
+        if (!message.Content.StartsWith("_") && message.Content.ToLower() != "filmaço")
+            return;
+
         var messageString = message.Content.ToLower();
 
         SaveUserId(message);
@@ -57,23 +59,34 @@ public class ChoicesBusiness : IChoicesBusiness
 
     private void SaveUserId(SocketMessage message)
     {
+        bool updateCache = true;
+
         if (_account.Any())
+        {
             if (_cache.TryGetValue("ACCOUNT", out List<AccountDto> listAccount))
             {
-                if(listAccount.Count > _account.Count)
-                    _account = listAccount; 
-                return;
+                if (!listAccount.Select(x => x.AccountId).Contains(message.Author.Id))
+                {
+                    _account.Add(new AccountDto
+                    {
+                        AccountId = message.Author.Id,
+                        GenshinCharacters = new List<GenshinCharacterDto>()
+                    });
+                }
+                else
+                    updateCache = false;
             }
-
-        _account.Add(new AccountDto
-        {
-            AccountId = message.Author.Id,
-            GenshinCharacters = new List<GenshinCharacterDto>()
         }
-        );
+        else
+            _account.Add(new AccountDto
+            {
+                AccountId = message.Author.Id,
+                GenshinCharacters = new List<GenshinCharacterDto>()
+            }
+            );
 
-
-        _cache.Set("ACCOUNT", _account);
+        if (updateCache)
+            _cache.Set("ACCOUNT", _account);
     }
 
     private async Task SaveGenshinCharactersOnAccount(SocketMessage message)
@@ -98,7 +111,7 @@ public class ChoicesBusiness : IChoicesBusiness
         _cache.Set(_account, _account);
     }
 
-    private async Task VerifyCharactersFromAccount(SocketMessage message) 
+    private async Task VerifyCharactersFromAccount(SocketMessage message)
     {
         var characters = _account.Where(x => x.AccountId == message.Author.Id).Select(x => x.GenshinCharacters).FirstOrDefault();
 
