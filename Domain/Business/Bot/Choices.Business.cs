@@ -2,7 +2,9 @@
 using Domain.DTO.Common;
 using Domain.DTO.Genshin;
 using Domain.Interface.Bot;
+using Domain.Interface.Business.Genshin;
 using Microsoft.Extensions.Caching.Memory;
+using System.Linq;
 
 namespace ConsoleApp.Bot;
 
@@ -11,11 +13,13 @@ public class ChoicesBusiness : IChoicesBusiness
 
     private List<AccountDto> _account;
     private IMemoryCache _cache;
+    private IGenshinBusiness _genshinBusiness;
 
-    public ChoicesBusiness(IMemoryCache cache)
+    public ChoicesBusiness(IMemoryCache cache, IGenshinBusiness genshinBusiness)
     {
         _cache = cache;
         _account = new List<AccountDto>();
+        _genshinBusiness = genshinBusiness;
     }
 
     public async Task ChoseCoice(SocketMessage message)
@@ -32,6 +36,12 @@ public class ChoicesBusiness : IChoicesBusiness
 
         else if (MudaeWrongPlaceValidate(messageString, message.Channel.Name))
             await message.Channel.SendMessageAsync($"{message.Author.GlobalName} é viado!");
+
+        else if (messageString.Equals("_genshintenpull"))
+            await SaveGenshinCharactersOnAccount(message);
+
+        else if (messageString.Equals("_genshinverifycharacters"))
+            await VerifyCharactersFromAccount(message);
     }
 
     private bool MudaeWrongPlaceValidate(string message, string channelName)
@@ -64,5 +74,45 @@ public class ChoicesBusiness : IChoicesBusiness
 
 
         _cache.Set("ACCOUNT", _account);
+    }
+
+    private async Task SaveGenshinCharactersOnAccount(SocketMessage message)
+    {
+        var accountToEdit = _account.Where(x => x.AccountId == message.Author.Id).FirstOrDefault();
+
+        var characters = _genshinBusiness.PullTenCharacters();
+
+        string messageToSend = $"{message.Author.GlobalName} deu 10 tiros em Genshin Impact e obteve:\n";
+
+        foreach (var character in characters)
+            messageToSend += $"Nome: {character.Name} - Elemento: {Enum.GetName(character.Element)} - Estrelas: {(int)character.Star}\n";
+
+        await message.Channel.SendMessageAsync(messageToSend);
+
+        accountToEdit.GenshinCharacters.AddRange(characters);
+
+        _account = _account.Where(x => x.AccountId != message.Author.Id).ToList();
+
+        _account.Add(accountToEdit);
+
+        _cache.Set(_account, _account);
+    }
+
+    private async Task VerifyCharactersFromAccount(SocketMessage message) 
+    {
+        var characters = _account.Where(x => x.AccountId == message.Author.Id).Select(x => x.GenshinCharacters).FirstOrDefault();
+
+        if (!characters.Any())
+        {
+            await message.Channel.SendMessageAsync("Você não tem personagens");
+            return;
+        }
+
+        var messageString = $"{message.Author.GlobalName} tem os seguintes personagens na conta:\n";
+
+        foreach (var character in characters)
+            messageString += $"Nome: {character.Name} - Elemento: {Enum.GetName(character.Element)} - Estrelas: {(int)character.Star}\n";
+
+        await message.Channel.SendMessageAsync(messageString);
     }
 }

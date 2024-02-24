@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\Business\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.13.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
   </ItemGroup>
