@@ -11,4 +11,14 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Misc\Genshin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Misc\Genshin\Amber.webp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

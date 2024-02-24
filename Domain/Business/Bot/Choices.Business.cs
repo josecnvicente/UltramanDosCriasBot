@@ -4,6 +4,8 @@ using Domain.DTO.Genshin;
 using Domain.Interface.Bot;
 using Domain.Interface.Business.Genshin;
 using Microsoft.Extensions.Caching.Memory;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace ConsoleApp.Bot;
 
@@ -114,6 +116,8 @@ public class ChoicesBusiness : IChoicesBusiness
     private async Task VerifyCharactersFromAccount(SocketMessage message)
     {
         var characters = _account.Where(x => x.AccountId == message.Author.Id).Select(x => x.GenshinCharacters).FirstOrDefault();
+
+        //var stringx = AppDomain.CurrentDomain.BaseDirectory + "Misc\\Genshin\\Amber.webp";
 
         if (!characters.Any())
         {
