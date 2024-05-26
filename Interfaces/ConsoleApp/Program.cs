@@ -39,7 +39,7 @@ namespace ConsoleApp
 
             IConfiguration config = builder.Build();
 
-            ConfigDto.DiscordConfig = config.GetSection("Discord").Get<DiscordDto>();
+            Configuration.DiscordConfig = config.GetSection("Discord").Get<Configuration.DiscordDto>();
         }
     }
 }

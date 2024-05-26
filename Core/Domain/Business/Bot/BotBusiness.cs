@@ -24,7 +24,7 @@ public class BotBusiness: IBotBusiness
         _client.Log += LogAsync;
         _client.MessageReceived += MessageReceivedAsync;
 
-        string token = ConfigDto.DiscordConfig.Token;
+        string token = Configuration.DiscordConfig.Token;
 
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
