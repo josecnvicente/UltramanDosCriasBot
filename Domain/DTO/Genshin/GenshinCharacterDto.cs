@@ -6,5 +6,5 @@ public class GenshinCharacterDto
 {
     public string Name { get; set; }
     public ElementEnum Element { get; set; }
-    public int Star { get; set; }
+    public StarsEnum Star { get; set; }
 }
