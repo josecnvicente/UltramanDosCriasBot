@@ -1,6 +1,6 @@
 ﻿using Discord.WebSocket;
 
-namespace Domain.Interface.Bot;
+namespace Domain.Interface.Business.Bot;
 
 public interface IChoicesBusiness
 {

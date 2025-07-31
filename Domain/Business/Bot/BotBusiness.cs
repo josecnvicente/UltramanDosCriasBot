@@ -1,9 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Domain.DTO.Config;
-using Domain.Interface.Bot;
+using Domain.Interface.Business.Bot;
 
-namespace ConsoleApp.Bot;
+namespace Business.Domain.Bot;
 
 public class BotBusiness: IBotBusiness
 {

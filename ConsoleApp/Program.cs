@@ -1,8 +1,6 @@
-﻿using ConsoleApp.Bot;
-using Domain.Business.Genshin;
+﻿using Business.Domain.Bot;
 using Domain.DTO.Config;
-using Domain.Interface.Bot;
-using Domain.Interface.Business.Genshin;
+using Domain.Interface.Business.Bot;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +26,8 @@ namespace ConsoleApp
             services.AddMemoryCache()
                 .AddSingleton<IBotBusiness, BotBusiness>()
                 .AddSingleton<IChoicesBusiness, ChoicesBusiness>()
-                .AddSingleton<IGenshinBusiness, GenshinBusiness>();
+                .AddSingleton<ILolBusiness, LolBusiness>()
+                .AddSingleton<IJokeBusiness, JokeBusiness>();
         }
 
         private static void ConfigAppSettings()
