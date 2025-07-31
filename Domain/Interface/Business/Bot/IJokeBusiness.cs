@@ -6,4 +6,5 @@ public interface IJokeBusiness
 {
     bool MudaeWrongPlaceValidate(string message, string channelName);
     string SortearNoCanalDeVoz(SocketMessage message);
+    Task EnviarMensagemParaCargo(SocketMessage message);
 }

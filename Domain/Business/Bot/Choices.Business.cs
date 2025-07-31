@@ -4,7 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Business.Domain.Bot;
 
-public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJokeBusiness jokeBusiness) : IChoicesBusiness
+public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJokeBusiness jokeBusiness) 
+    : IChoicesBusiness
 {
     public async Task ChoseCoice(SocketMessage message)
     {
@@ -25,5 +26,7 @@ public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJoke
             await message.Channel.SendMessageAsync(lolBusiness.RandomLolTeam());
         else if (messageString.Equals("_sorteio"))
             await message.Channel.SendMessageAsync(jokeBusiness.SortearNoCanalDeVoz(message));
+        else if (messageString.Equals("_feeders"))
+            await jokeBusiness.EnviarMensagemParaCargo(message);
     }
 }

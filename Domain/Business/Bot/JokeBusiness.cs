@@ -1,3 +1,4 @@
+using Discord;
 using Discord.WebSocket;
 using Domain.Interface.Business.Bot;
 
@@ -39,4 +40,58 @@ public class JokeBusiness : IJokeBusiness
                 message.Equals("$wg") || message.Equals("$mg") || message.Equals("$hg") ||
                 message.Equals("$w") || message.Equals("$m") || message.Equals("$h"));
     }
+    
+    public async Task EnviarMensagemParaCargo(SocketMessage message)
+    {
+        string nomeDoCargo = "feeders";
+        
+        if (message.Author.IsBot)
+            return;
+
+        // Obtém o usuário como membro do servidor
+        var usuario = message.Author as SocketGuildUser;
+        var guild = usuario?.Guild;
+
+        if (guild == null)
+        {
+            await message.Channel.SendMessageAsync("❌ Comando só pode ser usado em servidores.");
+            return;
+        }
+
+        // Procura o cargo pelo nome
+        var cargo = guild.Roles.FirstOrDefault(r =>
+            r.Name.Equals(nomeDoCargo, StringComparison.OrdinalIgnoreCase));
+        
+        if (cargo == null)
+        {
+            await message.Channel.SendMessageAsync($"❌ Cargo '{nomeDoCargo}' não encontrado.");
+            return;
+        }
+        
+        var membrosComCargo = guild.Users.Where(u => u.Roles.Contains(cargo) && !u.IsBot).ToList();
+
+        if (membrosComCargo.Count == 0)
+        {
+            await message.Channel.SendMessageAsync($"⚠️ Nenhum membro com o cargo '{nomeDoCargo}' foi encontrado.");
+            return;
+        }
+
+        int enviados = 0;
+        foreach (var membro in membrosComCargo)
+        {
+            try
+            {
+                await membro.SendMessageAsync("Bora jogar um lol.");
+                enviados++;
+            }
+            catch
+            {
+                await message.Channel
+                    .SendMessageAsync($@"⚠️ Ocorrou um erro ao tentar enviar mensagem para o membro {membro.DisplayName}");
+            }
+        }
+
+        await message.Channel.SendMessageAsync($"✅ Mensagem enviada para todos os membros com o cargo '{nomeDoCargo}'.");
+    }
+
 }
