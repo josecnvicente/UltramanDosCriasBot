@@ -44,7 +44,16 @@ public class JokeBusiness : IJokeBusiness
     public async Task EnviarMensagemParaCargo(SocketMessage message)
     {
         string nomeDoCargo = "feeders";
-        
+        string caminhoDoAudio = AppContext.BaseDirectory;
+        List<string> usuariosNaoEnviado = new List<string>();
+        Dictionary<string, string> nomeParaNick = new Dictionary<string, string>
+        {
+            { "dwolfwood", "Amanda" },
+            { "auron14", "Brunao" },
+            { "yomi_x3", "Yomi" },
+            { "xwnandoz", "Nando" }
+        };
+
         if (message.Author.IsBot)
             return;
 
@@ -76,22 +85,38 @@ public class JokeBusiness : IJokeBusiness
             return;
         }
 
-        int enviados = 0;
         foreach (var membro in membrosComCargo)
         {
             try
             {
-                await membro.SendMessageAsync("Bora jogar um lol.");
-                enviados++;
+                if (nomeParaNick.ContainsKey(membro.Username.ToLower()))
+                {
+                    string caminhoCompleto = $"{caminhoDoAudio}//{nomeParaNick[membro.Username.ToLower()]}.mp3";
+                    var dmChannel = await membro.CreateDMChannelAsync();
+                    await dmChannel.SendFileAsync(caminhoCompleto,
+                        $"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+                }
+                else
+                    await membro.SendMessageAsync($"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
             }
             catch
             {
-                await message.Channel
-                    .SendMessageAsync($@"⚠️ Ocorrou um erro ao tentar enviar mensagem para o membro {membro.DisplayName}");
+                usuariosNaoEnviado.Add(membro.DisplayName);
             }
         }
 
-        await message.Channel.SendMessageAsync($"✅ Mensagem enviada para todos os membros com o cargo '{nomeDoCargo}'.");
+        if (usuariosNaoEnviado.Count > 0 && membrosComCargo.Count < usuariosNaoEnviado.Count)
+        {
+            string usuariosNaoEnviadosStr = string.Join(", ", usuariosNaoEnviado);
+            await message.Channel.SendMessageAsync($"⚠️ Não foi possível enviar mensagem para: {usuariosNaoEnviadosStr}");
+        }
+        else if (usuariosNaoEnviado.Count > 0 && membrosComCargo.Count > usuariosNaoEnviado.Count)
+        {
+            string usuariosNaoEnviadosStr = string.Join(", ", usuariosNaoEnviado);
+            await message.Channel.SendMessageAsync($@"⚠️ Mensagem enviada para alguns membros com cargo '{nomeDoCargo}'.
+Exceto: {usuariosNaoEnviadosStr}.");
+        }
+        else
+            await message.Channel.SendMessageAsync($"✅ Mensagem enviada para todos os membros com o cargo '{nomeDoCargo}'.");
     }
-
 }

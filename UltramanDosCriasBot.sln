@@ -11,6 +11,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{455E29
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{0098C92E-2E99-40A4-9E79-85DBDD585D12}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{0D0E1F29-9591-48AA-921F-EC756877922E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Audio", "Audio", "{DFBD4D2C-CFA2-45C9-904B-3994F3F7128E}"
+	ProjectSection(SolutionItems) = preProject
+		Misc\Audio\Amanda.mp3 = Misc\Audio\Amanda.mp3
+		Misc\Audio\Brunao.mp3 = Misc\Audio\Brunao.mp3
+		Misc\Audio\Nando.mp3 = Misc\Audio\Nando.mp3
+		Misc\Audio\Yomi.mp3 = Misc\Audio\Yomi.mp3
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B8C066B2-2A87-4446-84B2-ECD961110DB2} = {367ED0A3-EB88-4FAB-9DB2-22D154752F19}
 		{0098C92E-2E99-40A4-9E79-85DBDD585D12} = {455E299D-0E75-484E-967A-1CAE40CCBF2B}
+		{DFBD4D2C-CFA2-45C9-904B-3994F3F7128E} = {0D0E1F29-9591-48AA-921F-EC756877922E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF25BC0C-44FD-43EA-AC50-624F1C57B8DA}

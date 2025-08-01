@@ -26,6 +26,22 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Misc\Audio\Amanda.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Amanda.mp3</Link>
+    </None>
+    <None Include="..\Misc\Audio\Nando.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Nando.mp3</Link>
+    </None>
+    <None Include="..\Misc\Audio\Brunao.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Brunao.mp3</Link>
+    </None>
+    <None Include="..\Misc\Audio\Yomi.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Yomi.mp3</Link>
+    </None>
   </ItemGroup>
 
 </Project>
