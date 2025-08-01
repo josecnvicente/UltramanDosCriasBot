@@ -10,7 +10,7 @@ public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJoke
     public async Task ChoseCoice(SocketMessage message)
     {
         if (!message.Content.StartsWith("_") && message.Content.ToLower() != "filmaço"
-            && message.Content.ToLower() != "$")
+            && !message.Content.StartsWith("$"))
             return;
 
         var messageString = message.Content.ToLower();
