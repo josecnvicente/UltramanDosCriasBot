@@ -42,6 +42,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Yomi.mp3</Link>
     </None>
+    <None Include="..\Misc\Imagens\Vampetaco\vampeta1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Misc\Imagens\Vampetaco\Vampeta1.jpg</Link>
+    </None>
+    <None Include="..\Misc\Imagens\Vampetaco\vampeta2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Misc\Imagens\Vampetaco\Vampeta2.jpg</Link>
+    </None>
+    <None Include="..\Misc\Imagens\Vampetaco\vampeta3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Misc\Imagens\Vampetaco\Vampeta3.jpg</Link>
+    </None>
+    <None Include="..\Misc\Imagens\Vampetaco\vampeta4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Misc\Imagens\Vampetaco\Vampeta4.jpg</Link>
+    </None>
+    <None Include="..\Misc\Imagens\Vampetaco\vampeta5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Misc\Imagens\Vampetaco\Vampeta5.jpg</Link>
+    </None>
+    <None Include="..\Misc\Imagens\Vampetaco\vampeta6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Misc\Imagens\Vampetaco\Vampeta6.jpg</Link>
+    </None>
   </ItemGroup>
 
 </Project>

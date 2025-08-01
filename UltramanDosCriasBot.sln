@@ -21,6 +21,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Audio", "Audio", "{DFBD4D2C
 		Misc\Audio\Yomi.mp3 = Misc\Audio\Yomi.mp3
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Imagens", "Imagens", "{C000A95D-55CA-4684-A219-6CC0A51FF006}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vampetaco", "Vampetaco", "{138AC0C1-8740-40D3-B4EB-5E9D14C6D3DA}"
+	ProjectSection(SolutionItems) = preProject
+		Misc\Imagens\Vampetaco\vampeta1.jpg = Misc\Imagens\Vampetaco\vampeta1.jpg
+		Misc\Imagens\Vampetaco\vampeta2.jpg = Misc\Imagens\Vampetaco\vampeta2.jpg
+		Misc\Imagens\Vampetaco\vampeta3.jpg = Misc\Imagens\Vampetaco\vampeta3.jpg
+		Misc\Imagens\Vampetaco\vampeta4.jpg = Misc\Imagens\Vampetaco\vampeta4.jpg
+		Misc\Imagens\Vampetaco\vampeta5.jpg = Misc\Imagens\Vampetaco\vampeta5.jpg
+		Misc\Imagens\Vampetaco\vampeta6.jpg = Misc\Imagens\Vampetaco\vampeta6.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +55,8 @@ Global
 		{B8C066B2-2A87-4446-84B2-ECD961110DB2} = {367ED0A3-EB88-4FAB-9DB2-22D154752F19}
 		{0098C92E-2E99-40A4-9E79-85DBDD585D12} = {455E299D-0E75-484E-967A-1CAE40CCBF2B}
 		{DFBD4D2C-CFA2-45C9-904B-3994F3F7128E} = {0D0E1F29-9591-48AA-921F-EC756877922E}
+		{C000A95D-55CA-4684-A219-6CC0A51FF006} = {0D0E1F29-9591-48AA-921F-EC756877922E}
+		{138AC0C1-8740-40D3-B4EB-5E9D14C6D3DA} = {C000A95D-55CA-4684-A219-6CC0A51FF006}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF25BC0C-44FD-43EA-AC50-624F1C57B8DA}

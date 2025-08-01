@@ -28,5 +28,7 @@ public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJoke
             await message.Channel.SendMessageAsync(jokeBusiness.SortearNoCanalDeVoz(message));
         else if (messageString.Equals("_feeders"))
             await jokeBusiness.EnviarMensagemParaCargo(message);
+        else if (messageString.Equals("_vampetarussa"))
+            await jokeBusiness.Vampetaco(message);
     }
 }

@@ -10,7 +10,7 @@ public class JokeBusiness : IJokeBusiness
     {
         if (message.Author.IsBot)
             return "";
-    
+
         var user = message.Author as SocketGuildUser;
         var voiceChannel = user?.VoiceChannel;
 
@@ -20,7 +20,7 @@ public class JokeBusiness : IJokeBusiness
         List<SocketGuildUser> membrosNaCall = voiceChannel.Users
             .Where(u => !u.IsBot && u.VoiceChannel != null)
             .ToList();
-        
+
         if (membrosNaCall.Count == 0)
             return "Não há membros suficientes na call.";
 
@@ -29,7 +29,7 @@ public class JokeBusiness : IJokeBusiness
 
         return $"🎉 Sorteado: **{sorteado.DisplayName}**!";
     }
-    
+
     public bool MudaeWrongPlaceValidate(string message, string channelName)
     {
         return (!channelName.Equals("mudae") ||
@@ -40,7 +40,35 @@ public class JokeBusiness : IJokeBusiness
                 message.Equals("$wg") || message.Equals("$mg") || message.Equals("$hg") ||
                 message.Equals("$w") || message.Equals("$m") || message.Equals("$h"));
     }
-    
+
+    public async Task Vampetaco(SocketMessage message)
+    {
+        string path = AppContext.BaseDirectory;
+        string pastaImagens = Path.Combine(path, "Misc\\Imagens\\Vampetaco");
+
+
+        // Obtém todos os arquivos de imagem da pasta
+        var arquivos = Directory.GetFiles(pastaImagens, "*.*")
+            .Where(f => f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+
+        if (arquivos.Length == 0)
+        {
+            await message.Channel.SendMessageAsync("⚠️ Nenhuma imagem encontrada na pasta.");
+            return;
+        }
+
+        // Escolhe uma imagem aleatória
+        var random = new Random();
+        var imagemSelecionada = arquivos[random.Next(arquivos.Length)];
+
+        // Envia a imagem
+        using (var stream = new FileStream(imagemSelecionada, FileMode.Open, FileAccess.Read))
+        {
+            await message.Channel.SendFileAsync(stream, Path.GetFileName(imagemSelecionada), "");
+        }
+    }
+
     public async Task EnviarMensagemParaCargo(SocketMessage message)
     {
         string nomeDoCargo = "feeders";
@@ -70,13 +98,13 @@ public class JokeBusiness : IJokeBusiness
         // Procura o cargo pelo nome
         var cargo = guild.Roles.FirstOrDefault(r =>
             r.Name.Equals(nomeDoCargo, StringComparison.OrdinalIgnoreCase));
-        
+
         if (cargo == null)
         {
             await message.Channel.SendMessageAsync($"❌ Cargo '{nomeDoCargo}' não encontrado.");
             return;
         }
-        
+
         var membrosComCargo = guild.Users.Where(u => u.Roles.Contains(cargo) && !u.IsBot).ToList();
 
         if (membrosComCargo.Count == 0)
@@ -89,6 +117,9 @@ public class JokeBusiness : IJokeBusiness
         {
             try
             {
+                if (membro.Username.ToLower() == message.Author.Username)
+                    continue;
+
                 if (nomeParaNick.ContainsKey(membro.Username.ToLower()))
                 {
                     string caminhoCompleto = $"{caminhoDoAudio}//{nomeParaNick[membro.Username.ToLower()]}.mp3";
