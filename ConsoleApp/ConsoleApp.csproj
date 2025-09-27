@@ -7,6 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IsPublishable>true</IsPublishable>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+  </PropertyGroup>
+
+
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.18.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.7" />
