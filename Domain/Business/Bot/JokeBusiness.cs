@@ -41,20 +41,27 @@ public class JokeBusiness : IJokeBusiness
                 message.Equals("$w") || message.Equals("$m") || message.Equals("$h"));
     }
 
-    public async Task Boiola(SocketMessage message)
+        public async Task Boiola(SocketMessage message)
     {
         string path = AppContext.BaseDirectory;
-        string pastaImagens = Path.Combine(path, "Misc\\Imagens");
+            string pastaImagens = Path.Combine(path, "Misc", "Imagens");
 
-        // Procura especificamente por "boiola.jpg" (ignora maiúsculas/minúsculas)
-        var imagemSelecionada = Directory.GetFiles(pastaImagens, "*.*")
-            .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "boiola.jpg", StringComparison.OrdinalIgnoreCase));
+            // Verifica se a pasta existe antes de tentar listar arquivos
+            if (!Directory.Exists(pastaImagens))
+            {
+                await message.Channel.SendMessageAsync("⚠️ Pasta de imagens não encontrada.");
+                return;
+            }
 
-        if (string.IsNullOrEmpty(imagemSelecionada) || !File.Exists(imagemSelecionada))
-        {
-            await message.Channel.SendMessageAsync("⚠️ `boiola.jpg` não encontrada na pasta.");
-            return;
-        }
+            // Procura especificamente por "boiola.jpg" (ignora maiúsculas/minúsculas)
+            var imagemSelecionada = Directory.GetFiles(pastaImagens, "*.*")
+                .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "boiola.jpg", StringComparison.OrdinalIgnoreCase));
+
+            if (string.IsNullOrEmpty(imagemSelecionada) || !File.Exists(imagemSelecionada))
+            {
+                await message.Channel.SendMessageAsync("⚠️ `boiola.jpg` não encontrada na pasta.");
+                return;
+            }
 
         using (var stream = new FileStream(imagemSelecionada, FileMode.Open, FileAccess.Read))
         {
@@ -62,22 +69,28 @@ public class JokeBusiness : IJokeBusiness
         }
     }
 
-    public async Task Vampetaco(SocketMessage message)
+        public async Task Vampetaco(SocketMessage message)
     {
         string path = AppContext.BaseDirectory;
-        string pastaImagens = Path.Combine(path, "Misc\\Imagens\\Vampetaco");
 
+            string pastaImagens = Path.Combine(path, "Misc", "Imagens", "Vampetaco");
 
-        // Obtém todos os arquivos de imagem da pasta
-        var arquivos = Directory.GetFiles(pastaImagens, "*.*")
-            .Where(f => f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+            if (!Directory.Exists(pastaImagens))
+            {
+                await message.Channel.SendMessageAsync("⚠️ Pasta de imagens 'Vampetaco' não encontrada.");
+                return;
+            }
 
-        if (arquivos.Length == 0)
-        {
-            await message.Channel.SendMessageAsync("⚠️ Nenhuma imagem encontrada na pasta.");
-            return;
-        }
+            // Obtém todos os arquivos de imagem da pasta
+            var arquivos = Directory.GetFiles(pastaImagens, "*.*")
+                .Where(f => f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            if (arquivos.Length == 0)
+            {
+                await message.Channel.SendMessageAsync("⚠️ Nenhuma imagem encontrada na pasta.");
+                return;
+            }
 
         // Escolhe uma imagem aleatória
         var random = new Random();
@@ -90,10 +103,11 @@ public class JokeBusiness : IJokeBusiness
         }
     }
 
-    public async Task EnviarMensagemParaCargo(SocketMessage message)
+        public async Task EnviarMensagemParaCargo(SocketMessage message)
     {
         string nomeDoCargo = "feeders";
-        string caminhoDoAudio = AppContext.BaseDirectory;
+            // Ajusta caminho de áudio para uma subpasta padronizada dentro do diretório base
+            string caminhoDoAudio = Path.Combine(AppContext.BaseDirectory, "Misc", "Audio");
         List<string> usuariosNaoEnviado = new List<string>();
         Dictionary<string, string> nomeParaNick = new Dictionary<string, string>
         {
@@ -143,10 +157,18 @@ public class JokeBusiness : IJokeBusiness
 
                 if (nomeParaNick.ContainsKey(membro.Username.ToLower()))
                 {
-                    string caminhoCompleto = $"{caminhoDoAudio}//{nomeParaNick[membro.Username.ToLower()]}.mp3";
+                    string caminhoCompleto = Path.Combine(caminhoDoAudio, $"{nomeParaNick[membro.Username.ToLower()]}.mp3");
                     var dmChannel = await membro.CreateDMChannelAsync();
-                    await dmChannel.SendFileAsync(caminhoCompleto,
-                        $"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+
+                    if (File.Exists(caminhoCompleto))
+                    {
+                        await dmChannel.SendFileAsync(caminhoCompleto,
+                            $"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+                    }
+                    else
+                    {
+                        await dmChannel.SendMessageAsync($"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+                    }
                 }
                 else
                     await membro.SendMessageAsync($"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
