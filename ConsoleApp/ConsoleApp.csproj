@@ -14,14 +14,14 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Discord.Net" Version="3.18.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.json" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.binder" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Discord.Net" Version="3.20.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.json" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.binder" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +72,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Misc\Imagens\Vampetaco\Vampeta6.jpg</Link>
     </None>
+	  <None Include="..\Misc\Imagens\boiola.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Link>Misc\Imagens\boiola.jpg</Link>
+	  </None>
   </ItemGroup>
 
 </Project>

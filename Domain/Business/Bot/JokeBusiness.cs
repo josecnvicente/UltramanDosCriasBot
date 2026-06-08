@@ -41,6 +41,27 @@ public class JokeBusiness : IJokeBusiness
                 message.Equals("$w") || message.Equals("$m") || message.Equals("$h"));
     }
 
+    public async Task Boiola(SocketMessage message)
+    {
+        string path = AppContext.BaseDirectory;
+        string pastaImagens = Path.Combine(path, "Misc\\Imagens");
+
+        // Procura especificamente por "boiola.jpg" (ignora maiúsculas/minúsculas)
+        var imagemSelecionada = Directory.GetFiles(pastaImagens, "*.*")
+            .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "boiola.jpg", StringComparison.OrdinalIgnoreCase));
+
+        if (string.IsNullOrEmpty(imagemSelecionada) || !File.Exists(imagemSelecionada))
+        {
+            await message.Channel.SendMessageAsync("⚠️ `boiola.jpg` não encontrada na pasta.");
+            return;
+        }
+
+        using (var stream = new FileStream(imagemSelecionada, FileMode.Open, FileAccess.Read))
+        {
+            await message.Channel.SendFileAsync(stream, Path.GetFileName(imagemSelecionada), "");
+        }
+    }
+
     public async Task Vampetaco(SocketMessage message)
     {
         string path = AppContext.BaseDirectory;

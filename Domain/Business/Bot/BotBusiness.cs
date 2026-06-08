@@ -17,7 +17,9 @@ public class BotBusiness: IBotBusiness
     {
         var configuracoes = new DiscordSocketConfig()
         {
-            GatewayIntents = GatewayIntents.All
+            GatewayIntents = GatewayIntents.Guilds |
+                             GatewayIntents.GuildMessages |
+                             GatewayIntents.MessageContent
         };
 
         _client = new DiscordSocketClient(configuracoes);

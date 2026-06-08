@@ -38,7 +38,16 @@ namespace ConsoleApp
 
             IConfiguration config = builder.Build();
 
-            ConfigDto.DiscordConfig = config.GetSection("Discord").Get<DiscordDto>();
+            string? token = Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                ConfigDto.DiscordConfig = new DiscordDto { Token = token };
+            }
+            else
+            {
+                ConfigDto.DiscordConfig = config.GetSection("Discord").Get<DiscordDto>()!;
+            }
         }
     }
 }

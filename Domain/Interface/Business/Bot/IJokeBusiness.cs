@@ -8,4 +8,5 @@ public interface IJokeBusiness
     string SortearNoCanalDeVoz(SocketMessage message);
     Task EnviarMensagemParaCargo(SocketMessage message);
     Task Vampetaco(SocketMessage message);
+    Task Boiola(SocketMessage message);
 }

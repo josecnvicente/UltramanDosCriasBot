@@ -9,10 +9,6 @@ public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJoke
 {
     public async Task ChoseCoice(SocketMessage message)
     {
-        if (!message.Content.StartsWith("_") && message.Content.ToLower() != "filmaço"
-            && !message.Content.StartsWith("$"))
-            return;
-
         var messageString = message.Content.ToLower();
 
         if (messageString.Equals("filmaço"))
@@ -26,9 +22,11 @@ public class ChoicesBusiness(IMemoryCache cache, ILolBusiness lolBusiness, IJoke
             await message.Channel.SendMessageAsync(lolBusiness.RandomLolTeam());
         else if (messageString.Equals("_sorteio"))
             await message.Channel.SendMessageAsync(jokeBusiness.SortearNoCanalDeVoz(message));
-        else if (messageString.Equals("_feeders"))
+        else if (messageString.Equals("@feeders"))
             await jokeBusiness.EnviarMensagemParaCargo(message);
         else if (messageString.Equals("_vampetarussa"))
             await jokeBusiness.Vampetaco(message);
+        else if (messageString.Contains("boiola"))
+            await jokeBusiness.Boiola(message);
     }
 }
