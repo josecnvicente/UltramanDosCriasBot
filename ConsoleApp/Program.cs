@@ -32,12 +32,6 @@ namespace ConsoleApp
 
         private static void ConfigAppSettings()
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false);
-
-            IConfiguration config = builder.Build();
-
             string? token = Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN");
 
             if (!string.IsNullOrEmpty(token))
@@ -46,6 +40,12 @@ namespace ConsoleApp
             }
             else
             {
+                var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false);
+
+                IConfiguration config = builder.Build();
+
                 ConfigDto.DiscordConfig = config.GetSection("Discord").Get<DiscordDto>()!;
             }
         }
