@@ -1,4 +1,5 @@
 ﻿using Business.Domain.Bot;
+using Domain.Business.Bot;
 using Domain.DTO.Config;
 using Domain.Interface.Business.Bot;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ namespace ConsoleApp
             ConfigureServices(serviceCollection);
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var botBusiness = serviceProvider.GetService<IBotBusiness>();
+            var botBusiness = serviceProvider.GetService<IBotBusiness>()!;
 
             await botBusiness.RunBotAsync();
         }

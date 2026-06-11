@@ -4,9 +4,11 @@ namespace Domain.Interface.Business.Bot;
 
 public interface IJokeBusiness
 {
-    bool MudaeWrongPlaceValidate(string message, string channelName);
+    Task VerifyFriday(SocketMessage message);
+    Task MudaeWrongPlace(SocketMessage message);
     string SortearNoCanalDeVoz(SocketMessage message);
     Task EnviarMensagemParaCargo(SocketMessage message);
     Task Vampetaco(SocketMessage message);
     Task Boiola(SocketMessage message);
+    Task MonthJoke(SocketMessage message);
 }

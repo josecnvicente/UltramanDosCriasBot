@@ -3,15 +3,11 @@ using Discord.WebSocket;
 using Domain.DTO.Config;
 using Domain.Interface.Business.Bot;
 
-namespace Business.Domain.Bot;
+namespace Domain.Business.Bot;
 
-public class BotBusiness: IBotBusiness
+public class BotBusiness(IChoicesBusiness choicesBusiness) : IBotBusiness
 {
-    private DiscordSocketClient _client;
-    private IChoicesBusiness _choices;
-
-    public BotBusiness(IChoicesBusiness choicesBusiness)
-        => _choices = choicesBusiness;
+    private DiscordSocketClient _client = new();
 
     public async Task RunBotAsync()
     {
@@ -42,6 +38,6 @@ public class BotBusiness: IBotBusiness
 
     private async Task MessageReceivedAsync(SocketMessage message)
     {
-        await _choices.ChoseCoice(message);
+        await choicesBusiness.ChoseCoice(message);
     }
 }

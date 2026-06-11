@@ -2,10 +2,18 @@ using Discord;
 using Discord.WebSocket;
 using Domain.Interface.Business.Bot;
 
-namespace Business.Domain.Bot;
+namespace Domain.Business.Bot;
 
 public class JokeBusiness : IJokeBusiness
 {
+    public async Task VerifyFriday(SocketMessage message)
+    {
+        if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+            await message.Channel.SendMessageAsync("SEXTOU, HOJE É DIA DE FILMAÇO!");
+        else
+            await message.Channel.SendMessageAsync("FILMAÇO SÓ SEXTA, MALUCÃO.");
+    }
+
     public string SortearNoCanalDeVoz(SocketMessage message)
     {
         if (message.Author.IsBot)
@@ -30,38 +38,30 @@ public class JokeBusiness : IJokeBusiness
         return $"🎉 Sorteado: **{sorteado.DisplayName}**!";
     }
 
-    public bool MudaeWrongPlaceValidate(string message, string channelName)
-    {
-        return (!channelName.Equals("mudae") ||
-                !channelName.Equals("ok1") ||
-                !channelName.Equals("ok2")) &
-               (message.Equals("$wa") || message.Equals("$ma") || message.Equals("$ha") ||
-                message.Equals("$wx") || message.Equals("$mx") || message.Equals("$hx") ||
-                message.Equals("$wg") || message.Equals("$mg") || message.Equals("$hg") ||
-                message.Equals("$w") || message.Equals("$m") || message.Equals("$h"));
-    }
+    public async Task MudaeWrongPlace(SocketMessage message)
+        => await message.Channel.SendMessageAsync($"{message.Author.GlobalName} é viado!");
 
-        public async Task Boiola(SocketMessage message)
+    public async Task Boiola(SocketMessage message)
     {
         string path = AppContext.BaseDirectory;
-            string pastaImagens = Path.Combine(path, "Misc", "Imagens");
+        string pastaImagens = Path.Combine(path, "Misc", "Imagens");
 
-            // Verifica se a pasta existe antes de tentar listar arquivos
-            if (!Directory.Exists(pastaImagens))
-            {
-                await message.Channel.SendMessageAsync("⚠️ Pasta de imagens não encontrada.");
-                return;
-            }
+        // Verifica se a pasta existe antes de tentar listar arquivos
+        if (!Directory.Exists(pastaImagens))
+        {
+            await message.Channel.SendMessageAsync("⚠️ Pasta de imagens não encontrada.");
+            return;
+        }
 
-            // Procura especificamente por "boiola.jpg" (ignora maiúsculas/minúsculas)
-            var imagemSelecionada = Directory.GetFiles(pastaImagens, "*.*")
-                .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "boiola.jpg", StringComparison.OrdinalIgnoreCase));
+        // Procura especificamente por "boiola.jpg" (ignora maiúsculas/minúsculas)
+        var imagemSelecionada = Directory.GetFiles(pastaImagens, "*.*")
+            .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "boiola.jpg", StringComparison.OrdinalIgnoreCase));
 
-            if (string.IsNullOrEmpty(imagemSelecionada) || !File.Exists(imagemSelecionada))
-            {
-                await message.Channel.SendMessageAsync("⚠️ `boiola.jpg` não encontrada na pasta.");
-                return;
-            }
+        if (string.IsNullOrEmpty(imagemSelecionada) || !File.Exists(imagemSelecionada))
+        {
+            await message.Channel.SendMessageAsync("⚠️ `boiola.jpg` não encontrada na pasta.");
+            return;
+        }
 
         using (var stream = new FileStream(imagemSelecionada, FileMode.Open, FileAccess.Read))
         {
@@ -69,28 +69,28 @@ public class JokeBusiness : IJokeBusiness
         }
     }
 
-        public async Task Vampetaco(SocketMessage message)
+    public async Task Vampetaco(SocketMessage message)
     {
         string path = AppContext.BaseDirectory;
 
-            string pastaImagens = Path.Combine(path, "Misc", "Imagens", "Vampetaco");
+        string pastaImagens = Path.Combine(path, "Misc", "Imagens", "Vampetaco");
 
-            if (!Directory.Exists(pastaImagens))
-            {
-                await message.Channel.SendMessageAsync("⚠️ Pasta de imagens 'Vampetaco' não encontrada.");
-                return;
-            }
+        if (!Directory.Exists(pastaImagens))
+        {
+            await message.Channel.SendMessageAsync("⚠️ Pasta de imagens 'Vampetaco' não encontrada.");
+            return;
+        }
 
-            // Obtém todos os arquivos de imagem da pasta
-            var arquivos = Directory.GetFiles(pastaImagens, "*.*")
-                .Where(f => f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
-                .ToArray();
+        // Obtém todos os arquivos de imagem da pasta
+        var arquivos = Directory.GetFiles(pastaImagens, "*.*")
+            .Where(f => f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
+            .ToArray();
 
-            if (arquivos.Length == 0)
-            {
-                await message.Channel.SendMessageAsync("⚠️ Nenhuma imagem encontrada na pasta.");
-                return;
-            }
+        if (arquivos.Length == 0)
+        {
+            await message.Channel.SendMessageAsync("⚠️ Nenhuma imagem encontrada na pasta.");
+            return;
+        }
 
         // Escolhe uma imagem aleatória
         var random = new Random();
@@ -103,12 +103,12 @@ public class JokeBusiness : IJokeBusiness
         }
     }
 
-        public async Task EnviarMensagemParaCargo(SocketMessage message)
+    public async Task EnviarMensagemParaCargo(SocketMessage message)
     {
         string nomeDoCargo = "feeders";
-            // Ajusta caminho de áudio para uma subpasta padronizada dentro do diretório base
-            string caminhoDoAudio = Path.Combine(AppContext.BaseDirectory, "Misc", "Audio");
-        List<string> usuariosNaoEnviado = new List<string>();
+        // Ajusta caminho de áudio para uma subpasta padronizada dentro do diretório base
+        string caminhoDoAudio = Path.Combine(AppContext.BaseDirectory, "Misc", "Audio");
+        List<string> usuariosNaoEnviado = [];
         Dictionary<string, string> nomeParaNick = new Dictionary<string, string>
         {
             { "dwolfwood", "Amanda" },
@@ -152,7 +152,7 @@ public class JokeBusiness : IJokeBusiness
         {
             try
             {
-                if (membro.Username.ToLower() == message.Author.Username)
+                if (membro.Username.ToLower().Equals(message.Author.Username))
                     continue;
 
                 if (nomeParaNick.ContainsKey(membro.Username.ToLower()))
@@ -163,15 +163,15 @@ public class JokeBusiness : IJokeBusiness
                     if (File.Exists(caminhoCompleto))
                     {
                         await dmChannel.SendFileAsync(caminhoCompleto,
-                            $"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+                            $"{usuario?.DisplayName} te chamou para feedar no Sindicato dos Crias.");
                     }
                     else
                     {
-                        await dmChannel.SendMessageAsync($"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+                        await dmChannel.SendMessageAsync($"{usuario?.DisplayName} te chamou para feedar no Sindicato dos Crias.");
                     }
                 }
                 else
-                    await membro.SendMessageAsync($"{usuario.DisplayName} te chamou para feedar no Sindicato dos Crias.");
+                    await membro.SendMessageAsync($"{usuario?.DisplayName} te chamou para feedar no Sindicato dos Crias.");
             }
             catch
             {
@@ -192,5 +192,17 @@ Exceto: {usuariosNaoEnviadosStr}.");
         }
         else
             await message.Channel.SendMessageAsync($"✅ Mensagem enviada para todos os membros com o cargo '{nomeDoCargo}'.");
+    }
+
+    public async Task MonthJoke(SocketMessage message)
+    {
+        int[] validMonths = new[] { 6 };
+        DateTime now = DateTime.Now;
+        TimeZoneInfo brazilTZ = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+        DateTime brazilTime = TimeZoneInfo.ConvertTime(now, brazilTZ);
+        if (validMonths.Contains(brazilTime.Month))
+            if (brazilTime.Month == 6)
+                if (message.Author.Username.ToLower().Equals("jesususouaegis4"))
+                    await message.Channel.SendMessageAsync("Pode ficar tranquilo AK, é junho, estamos no mês gay. 🌈");
     }
 }
