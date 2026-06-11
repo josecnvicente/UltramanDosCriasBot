@@ -200,7 +200,7 @@ Exceto: {usuariosNaoEnviadosStr}.");
 
     public async Task MonthJoke(SocketMessage message)
     {
-        string[] validUsersPrideMounth = ["jesususouaegis4", "manodosgato"];
+        string[] validUsersPrideMounth = ["jesususouaegis4"];
         string[] validUsersCrazyDogMounth = ["dwolfwood", "yanorth0"];
         int[] validMonths = new[] { 6, 8 };
         DateTime now = DateTime.Now;
@@ -213,11 +213,15 @@ Exceto: {usuariosNaoEnviadosStr}.");
                 return;
 
             if (brazilTime.Month == 6)
+            {
                 if (validUsersPrideMounth.Contains(message.Author.Username.ToLower()))
                     await message.Channel.SendMessageAsync($"Pode ficar tranquilo {message.Author.Mention}, é Junho, estamos no mês gay. 🌈");
-                else if (brazilTime.Month == 8)
-                    if (validUsersCrazyDogMounth.Contains(message.Author.Username.ToLower()))
-                        await message.Channel.SendMessageAsync($"Tome cuidado {message.Author.Mention}! É Agosto, estamos no mês do cachorro louco. 🐶");
+            }
+            else if (brazilTime.Month == 8)
+            {
+                if (validUsersCrazyDogMounth.Contains(message.Author.Username.ToLower()))
+                    await message.Channel.SendMessageAsync($"Tome cuidado {message.Author.Mention}! É Agosto, estamos no mês do cachorro louco. 🐶");
+            }
 
         }
     }
