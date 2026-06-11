@@ -200,6 +200,7 @@ Exceto: {usuariosNaoEnviadosStr}.");
 
     public async Task MonthJoke(SocketMessage message)
     {
+        string[] validUsers = ["jesususouaegis4", "manodosgato"];
         int[] validMonths = new[] { 6 };
         DateTime now = DateTime.Now;
         TimeZoneInfo brazilTZ = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
@@ -210,7 +211,7 @@ Exceto: {usuariosNaoEnviadosStr}.");
 
         if (validMonths.Contains(brazilTime.Month))
             if (brazilTime.Month == 6)
-                if (message.Author.Username.ToLower().Equals("jesususouaegis"))
+                if (validUsers.Contains(message.Author.Username.ToLower()))
                 {
                         await message.Channel.SendMessageAsync($"Pode ficar tranquilo {message.Author.Mention}, é junho, estamos no mês gay. 🌈");
                 }
