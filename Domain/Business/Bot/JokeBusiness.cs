@@ -205,12 +205,12 @@ Exceto: {usuariosNaoEnviadosStr}.");
         TimeZoneInfo brazilTZ = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
         DateTime brazilTime = TimeZoneInfo.ConvertTime(now, brazilTZ);
 
-        if (!await MounthJokeCache(message.Author.Username, brazilTime))
+        if (await MounthJokeCache(message.Author.Username, brazilTime))
             return;
 
         if (validMonths.Contains(brazilTime.Month))
             if (brazilTime.Month == 6)
-                if (message.Author.Username.ToLower().Equals("manodosgato"))
+                if (message.Author.Username.ToLower().Equals("jesususouaegis"))
                 {
                         await message.Channel.SendMessageAsync($"Pode ficar tranquilo {message.Author.Mention}, é junho, estamos no mês gay. 🌈");
                 }
@@ -220,9 +220,8 @@ Exceto: {usuariosNaoEnviadosStr}.");
     {
         if (string.IsNullOrWhiteSpace(user))
             return false;
-        
-        var key = user.Trim().ToLowerInvariant();
-        if (_dailyUserCache.TryGetValue(key, out DateTime lastCalled))
+
+        if (_dailyUserCache.TryGetValue(user, out DateTime lastCalled))
         {
             if (lastCalled.Date == date.Date)
                 return true;
@@ -233,7 +232,7 @@ Exceto: {usuariosNaoEnviadosStr}.");
             AbsoluteExpirationRelativeToNow = expiration > TimeSpan.Zero ? expiration : TimeSpan.FromHours(24)
         };
 
-        _dailyUserCache.Set(key, date, options);
+        _dailyUserCache.Set(user, date, options);
         return false;
     }
 }
