@@ -200,21 +200,26 @@ Exceto: {usuariosNaoEnviadosStr}.");
 
     public async Task MonthJoke(SocketMessage message)
     {
-        string[] validUsers = ["jesususouaegis4", "manodosgato"];
-        int[] validMonths = new[] { 6 };
+        string[] validUsersPrideMounth = ["jesususouaegis4", "manodosgato"];
+        string[] validUsersCrazyDogMounth = ["dwolfwood", "yanorth0"];
+        int[] validMonths = new[] { 6, 8 };
         DateTime now = DateTime.Now;
         TimeZoneInfo brazilTZ = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
         DateTime brazilTime = TimeZoneInfo.ConvertTime(now, brazilTZ);
 
-        if (await MounthJokeCache(message.Author.Username, brazilTime))
-            return;
-
         if (validMonths.Contains(brazilTime.Month))
+        {
+            if (await MounthJokeCache(message.Author.Username, brazilTime))
+                return;
+
             if (brazilTime.Month == 6)
-                if (validUsers.Contains(message.Author.Username.ToLower()))
-                {
-                        await message.Channel.SendMessageAsync($"Pode ficar tranquilo {message.Author.Mention}, é junho, estamos no mês gay. 🌈");
-                }
+                if (validUsersPrideMounth.Contains(message.Author.Username.ToLower()))
+                    await message.Channel.SendMessageAsync($"Pode ficar tranquilo {message.Author.Mention}, é Junho, estamos no mês gay. 🌈");
+                else if (brazilTime.Month == 8)
+                    if (validUsersCrazyDogMounth.Contains(message.Author.Username.ToLower()))
+                        await message.Channel.SendMessageAsync($"Tome cuidado {message.Author.Mention}! É Agosto, estamos no mês do cachorro louco. 🐶");
+
+        }
     }
 
     private async Task<bool> MounthJokeCache(string user, DateTime date)
