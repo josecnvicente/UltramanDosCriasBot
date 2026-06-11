@@ -1,11 +1,15 @@
 using Discord;
 using Discord.WebSocket;
 using Domain.Interface.Business.Bot;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Domain.Business.Bot;
 
 public class JokeBusiness : IJokeBusiness
 {
+    private static readonly MemoryCache _dailyUserCache
+        = new MemoryCache(new MemoryCacheOptions());
+
     public async Task VerifyFriday(SocketMessage message)
     {
         if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
@@ -200,9 +204,36 @@ Exceto: {usuariosNaoEnviadosStr}.");
         DateTime now = DateTime.Now;
         TimeZoneInfo brazilTZ = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
         DateTime brazilTime = TimeZoneInfo.ConvertTime(now, brazilTZ);
+
+        if (!await MounthJokeCache(message.Author.Username, brazilTime))
+            return;
+
         if (validMonths.Contains(brazilTime.Month))
             if (brazilTime.Month == 6)
-                if (message.Author.Username.ToLower().Equals("jesususouaegis4"))
-                    await message.Channel.SendMessageAsync("Pode ficar tranquilo AK, é junho, estamos no mês gay. 🌈");
+                if (message.Author.Username.ToLower().Equals("manodosgato"))
+                {
+                        await message.Channel.SendMessageAsync($"Pode ficar tranquilo {message.Author.Mention}, é junho, estamos no mês gay. 🌈");
+                }
+    }
+
+    private async Task<bool> MounthJokeCache(string user, DateTime date)
+    {
+        if (string.IsNullOrWhiteSpace(user))
+            return false;
+        
+        var key = user.Trim().ToLowerInvariant();
+        if (_dailyUserCache.TryGetValue(key, out DateTime lastCalled))
+        {
+            if (lastCalled.Date == date.Date)
+                return true;
+        }
+        var expiration = date.Date.AddDays(1) - DateTime.UtcNow;
+        var options = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = expiration > TimeSpan.Zero ? expiration : TimeSpan.FromHours(24)
+        };
+
+        _dailyUserCache.Set(key, date, options);
+        return false;
     }
 }
