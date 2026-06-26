@@ -30,10 +30,9 @@ public class BotBusiness(IChoicesBusiness choicesBusiness) : IBotBusiness
         await Task.Delay(-1);
     }
 
-    private Task LogAsync(LogMessage log)
+    private async Task LogAsync(LogMessage log)
     {
         Console.WriteLine(log);
-        return Task.CompletedTask;
     }
 
     private async Task MessageReceivedAsync(SocketMessage message)
