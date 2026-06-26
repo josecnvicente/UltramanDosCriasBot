@@ -8,25 +8,28 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
 {
     public async Task ChoseCoice(SocketMessage message)
     {
-        var messageString = message.Content.ToLower();
+        await Task.Run(async () =>
+        {
+            var messageString = message.Content.ToLower();
 
-        if (await VerifyMounth(messageString))
-            await jokeBusiness.MonthJoke(message);
+            if (await VerifyMounth(messageString))
+                await jokeBusiness.MonthJoke(message);
 
-        if (messageString.Contains("filmaço"))
-            await jokeBusiness.VerifyFriday(message);
-        else if (await MudaeWrongPlaceValidate(messageString, message.Channel.Name))
-            await jokeBusiness.MudaeWrongPlace(message);
-        else if (messageString.Equals("_lolrndteam"))
-            await message.Channel.SendMessageAsync(lolBusiness.RandomLolTeam());
-        else if (messageString.Equals("_sorteio"))
-            await message.Channel.SendMessageAsync(await jokeBusiness.SortearNoCanalDeVoz(message));
-        else if (messageString.Equals("@feeders"))
-            await jokeBusiness.EnviarMensagemParaCargo(message);
-        else if (messageString.Equals("_vampetarussa"))
-            await jokeBusiness.Vampetaco(message);
-        else if (messageString.Contains("boiola"))
-            await jokeBusiness.Boiola(message);
+            if (messageString.Contains("filmaço"))
+                await jokeBusiness.VerifyFriday(message);
+            else if (await MudaeWrongPlaceValidate(messageString, message.Channel.Name))
+                await jokeBusiness.MudaeWrongPlace(message);
+            else if (messageString.Equals("_lolrndteam"))
+                await message.Channel.SendMessageAsync(lolBusiness.RandomLolTeam());
+            else if (messageString.Equals("_sorteio"))
+                await message.Channel.SendMessageAsync(await jokeBusiness.SortearNoCanalDeVoz(message));
+            else if (messageString.Equals("@feeders"))
+                await jokeBusiness.EnviarMensagemParaCargo(message);
+            else if (messageString.Equals("_vampetarussa"))
+                await jokeBusiness.Vampetaco(message);
+            else if (messageString.Contains("boiola"))
+                await jokeBusiness.Boiola(message);
+        });
     }
 
     private async Task<bool> MudaeWrongPlaceValidate(string message, string channelName)
