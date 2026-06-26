@@ -10,17 +10,17 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
     {
         var messageString = message.Content.ToLower();
 
-        if (VerifyMounth(messageString))
+        if (await VerifyMounth(messageString))
             await jokeBusiness.MonthJoke(message);
 
         if (messageString.Contains("filmaço"))
             await jokeBusiness.VerifyFriday(message);
-        else if (MudaeWrongPlaceValidate(messageString, message.Channel.Name))
+        else if (await MudaeWrongPlaceValidate(messageString, message.Channel.Name))
             await jokeBusiness.MudaeWrongPlace(message);
         else if (messageString.Equals("_lolrndteam"))
             await message.Channel.SendMessageAsync(lolBusiness.RandomLolTeam());
         else if (messageString.Equals("_sorteio"))
-            await message.Channel.SendMessageAsync(jokeBusiness.SortearNoCanalDeVoz(message));
+            await message.Channel.SendMessageAsync(await jokeBusiness.SortearNoCanalDeVoz(message));
         else if (messageString.Equals("@feeders"))
             await jokeBusiness.EnviarMensagemParaCargo(message);
         else if (messageString.Equals("_vampetarussa"))
@@ -29,7 +29,7 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
             await jokeBusiness.Boiola(message);
     }
 
-    private bool MudaeWrongPlaceValidate(string message, string channelName)
+    private async Task<bool> MudaeWrongPlaceValidate(string message, string channelName)
     {
         return (!channelName.Equals("mudae") ||
                 !channelName.Equals("ok1") ||
@@ -40,7 +40,7 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
                 message.Equals("$w") || message.Equals("$m") || message.Equals("$h"));
     }
 
-    private bool VerifyMounth(string messageString)
+    private async Task<bool> VerifyMounth(string messageString)
     {
         int[] validMonths = [ 6 ];
 

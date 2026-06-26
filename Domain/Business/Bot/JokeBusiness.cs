@@ -18,7 +18,7 @@ public class JokeBusiness : IJokeBusiness
             await message.Channel.SendMessageAsync("FILMAÇO SÓ SEXTA, MALUCÃO.");
     }
 
-    public string SortearNoCanalDeVoz(SocketMessage message)
+    public async Task<string> SortearNoCanalDeVoz(SocketMessage message)
     {
         if (message.Author.IsBot)
             return "";
