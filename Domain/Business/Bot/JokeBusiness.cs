@@ -1,4 +1,3 @@
-using Discord;
 using Discord.WebSocket;
 using Domain.Interface.Business.Bot;
 using Microsoft.Extensions.Caching.Memory;
