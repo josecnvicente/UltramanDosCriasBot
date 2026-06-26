@@ -8,6 +8,9 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
 {
     public async Task ChoseCoice(SocketMessage message)
     {
+        if (message.Author.IsBot)
+            return;
+
         await Task.Run(async () =>
         {
             var messageString = message.Content.ToLower();
