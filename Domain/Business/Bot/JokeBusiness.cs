@@ -13,9 +13,15 @@ public class JokeBusiness : IJokeBusiness
     public async Task VerifyFriday(SocketMessage message)
     {
         if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+        {
             await message.Channel.SendMessageAsync("SEXTOU, HOJE É DIA DE FILMAÇO!");
+            return;
+        }
         else
+        {
             await message.Channel.SendMessageAsync("FILMAÇO SÓ SEXTA, MALUCÃO.");
+            return;
+        }
     }
 
     public async Task<string> SortearNoCanalDeVoz(SocketMessage message)
