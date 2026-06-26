@@ -43,7 +43,7 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
 
     private async Task<bool> VerifyMounth(string messageString)
     {
-        int[] validMonths = [6];
+        int[] validMonths = [6, 8];
 
         DateTime now = DateTime.Now;
         TimeZoneInfo brazilTZ = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
