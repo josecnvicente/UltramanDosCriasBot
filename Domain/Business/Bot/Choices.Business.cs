@@ -26,8 +26,6 @@ public class ChoicesBusiness(ILolBusiness lolBusiness, IJokeBusiness jokeBusines
                 await message.Channel.SendMessageAsync(lolBusiness.RandomLolTeam());
             else if (messageString.Equals("_sorteio"))
                 await message.Channel.SendMessageAsync(await jokeBusiness.SortearNoCanalDeVoz(message));
-            else if (messageString.Equals("@feeders"))
-                await jokeBusiness.EnviarMensagemParaCargo(message);
             else if (messageString.Equals("_vampetarussa"))
                 await jokeBusiness.Vampetaco(message);
             else if (messageString.Contains("boiola"))
