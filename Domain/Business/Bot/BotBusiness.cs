@@ -6,7 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Domain.Business.Bot;
 
-public class BotBusiness(IChoicesBusiness choicesBusiness, ILogger logger) : IBotBusiness
+public class BotBusiness(IChoicesBusiness choicesBusiness,
+    IBirthdayBusiness birthdayBusiness, ILogger<BotBusiness> logger) : IBotBusiness
 {
     private DiscordSocketClient _client = new();
 
@@ -24,6 +25,8 @@ public class BotBusiness(IChoicesBusiness choicesBusiness, ILogger logger) : IBo
             _client = new DiscordSocketClient(configuracoes);
             _client.Log += LogAsync;
             _client.MessageReceived += MessageReceivedAsync;
+            _client.Ready += ReadyAsync;
+
 
             string token = ConfigDto.DiscordConfig.Token;
 
@@ -46,5 +49,11 @@ public class BotBusiness(IChoicesBusiness choicesBusiness, ILogger logger) : IBo
     private async Task MessageReceivedAsync(SocketMessage message)
     {
         await choicesBusiness.ChoseCoice(message);
+    }
+
+    private async Task ReadyAsync()
+    {
+        while(true)
+            Task.WaitAll(birthdayBusiness.CheckAndSendBirthdaysAsync(_client));
     }
 }

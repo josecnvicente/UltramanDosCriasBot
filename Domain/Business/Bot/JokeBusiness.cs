@@ -1,14 +1,11 @@
 using Discord.WebSocket;
 using Domain.Interface.Business.Bot;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Domain.Business.Bot;
 
-public class JokeBusiness : IJokeBusiness
+public class JokeBusiness(ISharedBusiness sharedBusiness, ILogger<JokeBusiness> logger) : IJokeBusiness
 {
-    private static readonly MemoryCache _dailyUserCache
-        = new MemoryCache(new MemoryCacheOptions());
-
     public async Task VerifyFriday(SocketMessage message)
     {
         if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
@@ -52,7 +49,7 @@ public class JokeBusiness : IJokeBusiness
         // Verifica se a pasta existe antes de tentar listar arquivos
         if (!Directory.Exists(pastaImagens))
         {
-            await message.Channel.SendMessageAsync("⚠️ Pasta de imagens não encontrada.");
+            logger.LogWarning("Pasta de imagens não encontrada.");
             return;
         }
 
@@ -62,7 +59,7 @@ public class JokeBusiness : IJokeBusiness
 
         if (string.IsNullOrEmpty(imagemSelecionada) || !File.Exists(imagemSelecionada))
         {
-            await message.Channel.SendMessageAsync("⚠️ `boiola.jpg` não encontrada na pasta.");
+            logger.LogWarning("`boiola.jpg` não encontrada na pasta.");
             return;
         }
 
@@ -80,7 +77,7 @@ public class JokeBusiness : IJokeBusiness
 
         if (!Directory.Exists(pastaImagens))
         {
-            await message.Channel.SendMessageAsync("⚠️ Pasta de imagens 'Vampetaco' não encontrada.");
+            logger.LogWarning("Pasta de imagens 'Vampetaco' não encontrada.");
             return;
         }
 
@@ -91,7 +88,7 @@ public class JokeBusiness : IJokeBusiness
 
         if (arquivos.Length == 0)
         {
-            await message.Channel.SendMessageAsync("⚠️ Nenhuma imagem encontrada na pasta.");
+            logger.LogWarning("Nenhuma imagem encontrada na pasta.");
             return;
         }
 
@@ -117,7 +114,7 @@ public class JokeBusiness : IJokeBusiness
 
         if (validMonths.Contains(brazilTime.Month))
         {
-            if (await MounthJokeCache(message.Author.Username, brazilTime))
+            if (await sharedBusiness.MounthJokeCache(message.Author.Username, brazilTime))
                 return;
 
             if (brazilTime.Month == 6)
@@ -132,25 +129,5 @@ public class JokeBusiness : IJokeBusiness
             }
 
         }
-    }
-
-    private async Task<bool> MounthJokeCache(string user, DateTime date)
-    {
-        if (string.IsNullOrWhiteSpace(user))
-            return false;
-
-        if (_dailyUserCache.TryGetValue(user, out DateTime lastCalled))
-        {
-            if (lastCalled.Date == date.Date)
-                return true;
-        }
-        var expiration = date.Date.AddDays(1) - DateTime.UtcNow;
-        var options = new MemoryCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = expiration > TimeSpan.Zero ? expiration : TimeSpan.FromHours(24)
-        };
-
-        _dailyUserCache.Set(user, date, options);
-        return false;
     }
 }
