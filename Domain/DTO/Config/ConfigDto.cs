@@ -2,5 +2,5 @@
 
 public static class ConfigDto
 {
-    public static DiscordDto DiscordConfig { get; set; }
+    public static DiscordDto DiscordConfig { get; set; } = new();
 }
