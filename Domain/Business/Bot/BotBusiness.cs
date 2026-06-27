@@ -2,37 +2,45 @@
 using Discord.WebSocket;
 using Domain.DTO.Config;
 using Domain.Interface.Business.Bot;
+using Microsoft.Extensions.Logging;
 
 namespace Domain.Business.Bot;
 
-public class BotBusiness(IChoicesBusiness choicesBusiness) : IBotBusiness
+public class BotBusiness(IChoicesBusiness choicesBusiness, ILogger logger) : IBotBusiness
 {
     private DiscordSocketClient _client = new();
 
     public async Task RunBotAsync()
     {
-        var configuracoes = new DiscordSocketConfig()
+        try
         {
-            GatewayIntents = GatewayIntents.Guilds |
-                             GatewayIntents.GuildMessages |
-                             GatewayIntents.MessageContent
-        };
+            var configuracoes = new DiscordSocketConfig()
+            {
+                GatewayIntents = GatewayIntents.Guilds |
+                                 GatewayIntents.GuildMessages |
+                                 GatewayIntents.MessageContent
+            };
 
-        _client = new DiscordSocketClient(configuracoes);
-        _client.Log += LogAsync;
-        _client.MessageReceived += MessageReceivedAsync;
+            _client = new DiscordSocketClient(configuracoes);
+            _client.Log += LogAsync;
+            _client.MessageReceived += MessageReceivedAsync;
 
-        string token = ConfigDto.DiscordConfig.Token;
+            string token = ConfigDto.DiscordConfig.Token;
 
-        await _client.LoginAsync(TokenType.Bot, token);
-        await _client.StartAsync();
+            await _client.LoginAsync(TokenType.Bot, token);
+            await _client.StartAsync();
 
-        await Task.Delay(-1);
+            await Task.Delay(-1);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while running the bot. Message: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+        }
     }
 
     private async Task LogAsync(LogMessage log)
     {
-        Console.WriteLine(log);
+        logger.LogInformation(log.ToString());
     }
 
     private async Task MessageReceivedAsync(SocketMessage message)
