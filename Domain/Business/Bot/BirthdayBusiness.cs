@@ -15,7 +15,10 @@ public class BirthdayBusiness(ILogger<BirthdayBusiness> logger,
         { "manodosgato", new DateTime(1995, 12,15) },
         { "auron14", new DateTime(1996, 5, 14) },
         { "yomi_x3", new DateTime(2000, 11, 14) },
-        { "g_guerra", new DateTime(1996, 10, 30) }
+        { "g_guerra", new DateTime(1996, 10, 30) },
+        { "xwnandoz", new DateTime(1990, 9, 03)  },
+        { "garland_invincible", new DateTime(1990, 8, 20) },
+        { "yanorth0", new DateTime(1990, 3, 5) }
     };
 
     public async Task CheckAndSendBirthdaysAsync(DiscordSocketClient client)
