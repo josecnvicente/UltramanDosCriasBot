@@ -27,7 +27,7 @@ public class BirthdayBusiness(ILogger<BirthdayBusiness> logger,
         if (await sharedBusiness.DailyCache(brazilDate.Date))
         {
             logger.LogInformation("Verificação de aniversários já executada para {Date}", brazilDate.Date);
-            Task.Delay(10000).Wait();
+            Task.Delay(3600000).Wait();
             return;
         }
 
