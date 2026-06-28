@@ -11,7 +11,7 @@ public class BirthdayBusiness(ILogger<BirthdayBusiness> logger,
     private Dictionary<string, DateTime> _birthdays = new Dictionary<string, DateTime>()
     {
         { "dwolfwood", new DateTime(1996, 6, 4) },
-        { "jesususouaegis4", new DateTime(1996, 6, 28) },
+        { "jesususouaegis4", new DateTime(1996, 5, 28) },
         { "manodosgato", new DateTime(1995, 12,15) },
         { "auron14", new DateTime(1996, 5, 14) },
         { "yomi_x3", new DateTime(2000, 11, 14) },
